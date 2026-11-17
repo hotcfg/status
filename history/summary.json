@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "name": "Website and dashboard",
+    "url": "https://hotcfg.run",
+    "icon": "https://hotcfg.run/favicon.svg",
+    "slug": "website-and-dashboard",
+    "status": "up",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
+    "time": 616,
+    "timeDay": 616,
+    "timeWeek": 616,
+    "timeMonth": 616,
+    "timeYear": 616,
+    "dailyMinutesDown": {}
+  },
+  {
+    "name": "API",
+    "url": "https://api.hotcfg.run/_health",
+    "icon": "https://hotcfg.run/favicon.svg",
+    "slug": "api",
+    "status": "up",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
+    "time": 465,
+    "timeDay": 465,
+    "timeWeek": 465,
+    "timeMonth": 465,
+    "timeYear": 465,
+    "dailyMinutesDown": {}
+  }
+]
