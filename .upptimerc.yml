@@ -1,31 +1,73 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+owner: hotcfg # GitHub organization that holds this repository
+repo: status # Repository name
 
+# Checked every 5 minutes from GitHub Actions. A site counts as down when
+# the request fails, times out, or answers with a status outside 2xx.
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  - name: Website and dashboard
+    url: https://hotcfg.run
+    icon: https://hotcfg.run/favicon.svg
+  - name: API
+    url: https://api.hotcfg.run/_health
+    icon: https://hotcfg.run/favicon.svg
+    # /_health answers 200 {"status":"ok"} only when the database answers too.
+    __dangerous__body_down_if_text_missing: '"status":"ok"'
+
+# Response-time charts on the history pages, in the hotcfg accent.
+graphBorderColor: "#FF4F12"
+graphBackgroundColor: "rgba(255, 79, 18, 0.14)"
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  cname: status.hotcfg.run
+  name: hotcfg status
+  introTitle: "hotcfg status"
+  introMessage: "Live availability of the hotcfg website, dashboard and API, checked every five minutes. An incident opens here automatically when a check fails."
+
+  # The hotcfg look. The files live in assets/, which Upptime copies to the
+  # site root. tokens.css is the palette (dark default, light under
+  # html[data-theme="light"]); status.css styles the page and is loaded
+  # after Upptime's own stylesheet, so it wins.
+  # Keep these URLs absolute: the site build follows same-site links in
+  # <head> and writes a 404 page at each path it can't find yet (e.g.
+  # /hotcfg/tokens.css/index.html), which then blocks the real file.
+  themeUrl: https://status.hotcfg.run/hotcfg/tokens.css
+  links:
+    - rel: stylesheet
+      href: https://status.hotcfg.run/hotcfg/status.css
+  scripts:
+    - src: https://status.hotcfg.run/hotcfg/theme.js # applies the theme before first paint
+  faviconSvg: https://status.hotcfg.run/favicon.svg
+  favicon: https://status.hotcfg.run/apple-touch-icon.png
+  metaTags:
+    - name: description
+      content: Live availability and incident history for hotcfg.run.
+    - name: color-scheme
+      content: dark light
+
+  # status.css draws the logo, so it can follow the theme toggle (an <img>
+  # of an SVG can't). logoUrl is still needed for Upptime to render the link.
+  logoUrl: https://status.hotcfg.run/brand/hotcfg-logo-dark.svg
+  logoHref: https://hotcfg.run
+  hideNavLogo: true
+  hideNavTitle: true
   navbar:
     - title: Status
       href: /
-    - title: GitHub
-      href: https://github.com/$OWNER/$REPO
+    - title: Docs
+      href: https://hotcfg.run/docs
+    - title: hotcfg.run
+      href: https://hotcfg.run
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+  # Theme toggle (system -> light -> dark), the same as on hotcfg.run.
+  # theme.js handles the click; status.css shows the icon for the choice.
+  customBodyHtml: >-
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch theme: system, light or dark" title="Switch theme">
+    <svg class="i-system" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <svg class="i-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg class="i-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+
+i18n:
+  liveStatus: Services
+  up: Operational
+  footer: "© hotcfg.run · Monitored with [Upptime](https://upptime.js.org) · [Source]($REPO)"

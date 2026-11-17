@@ -1,0 +1,622 @@
+/*
+ * The status page in the hotcfg look: the header, cards, badges and type of
+ * hotcfg.run. Colors come from tokens.css, so both themes work.
+ *
+ * Loaded after Upptime's global.css and component styles. Rules that must
+ * beat a component's own (scoped) styles start with #sapper, the app root.
+ */
+
+/* ---- Base ---- */
+
+html {
+  scrollbar-gutter: stable;
+}
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: 0;
+}
+#sapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+::selection {
+  background: color-mix(in oklab, var(--accent) 30%, transparent);
+}
+a {
+  color: inherit;
+}
+a:focus-visible,
+button:focus-visible,
+label:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+}
+
+/* ---- Header: the hotcfg.run top bar ---- */
+
+/* Space for the theme toggle, which sits fixed at the bar's right end. */
+:root {
+  --gutter: 1.25rem;
+  --toggle: 2.5rem;
+}
+@media (min-width: 640px) {
+  :root {
+    --gutter: 2rem;
+  }
+}
+
+#sapper > nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: visible;
+  border-bottom: 1px solid var(--rule);
+  background: var(--nav-background-color);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+#sapper > nav > .container {
+  max-width: 80rem;
+  height: 4rem;
+  padding: 0 calc(var(--gutter) + var(--toggle) + 0.5rem) 0 var(--gutter);
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+#sapper > nav .logo {
+  float: none;
+  display: block;
+  margin: 0;
+  padding: 0;
+  /* The lockup's aspect ratio (358.3 x 102) at hotcfg.run's h-7. */
+  height: 1.75rem;
+  width: calc(1.75rem * 358.3 / 102);
+  background: url(/brand/hotcfg-logo-dark.svg) left center / contain no-repeat;
+  border-radius: 0.25rem;
+}
+html[data-theme="light"] #sapper > nav .logo {
+  background-image: url(/brand/hotcfg-logo-light.svg);
+}
+#sapper > nav .logo > * {
+  display: none;
+}
+#sapper > nav ul {
+  flex: 1;
+  justify-content: flex-start;
+  gap: 0.25rem;
+}
+#sapper > nav ul a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted);
+  border: 0;
+  border-radius: 0.25rem;
+  transition: color 0.15s, background-color 0.15s;
+}
+#sapper > nav ul a:hover,
+#sapper > nav ul a[aria-current] {
+  color: var(--ink);
+}
+/* The last link (hotcfg.run) is the bordered button at the right, where
+   hotcfg.run has "Log in". The logo links there too, so phones skip it. */
+#sapper > nav li:last-child {
+  margin-left: auto;
+}
+#sapper > nav li:last-child a {
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+}
+#sapper > nav li:last-child a:hover {
+  background: var(--raised);
+}
+@media (max-width: 639px) {
+  #sapper > nav > .container {
+    gap: 0.75rem;
+  }
+  #sapper > nav li:last-child {
+    display: none;
+  }
+  #sapper > nav ul a {
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+/* The theme toggle (customBodyHtml in .upptimerc.yml; theme.js). */
+.theme-toggle {
+  position: fixed;
+  z-index: 31;
+  top: 0.75rem;
+  right: max(var(--gutter), calc((100% - 80rem) / 2 + var(--gutter)));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--toggle);
+  height: var(--toggle);
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+.theme-toggle:hover {
+  color: var(--ink);
+  background: var(--raised);
+}
+.theme-toggle svg {
+  display: none;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+html:not([data-theme-pref]) .theme-toggle .i-system,
+html[data-theme-pref="system"] .theme-toggle .i-system,
+html[data-theme-pref="light"] .theme-toggle .i-light,
+html[data-theme-pref="dark"] .theme-toggle .i-dark {
+  display: block;
+}
+
+/* ---- Page ---- */
+
+#sapper > main.container {
+  flex: 1;
+  width: 100%;
+  max-width: 48rem;
+  padding: 3.5rem var(--gutter) 0;
+}
+@media (min-width: 640px) {
+  #sapper > main.container {
+    padding-top: 4.5rem;
+  }
+}
+
+#sapper main > header {
+  margin-bottom: 3rem;
+}
+#sapper main h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+@media (min-width: 640px) {
+  #sapper main h1 {
+    font-size: 2.5rem;
+  }
+}
+#sapper main h1 strong {
+  font-weight: 600;
+}
+#sapper p.lead {
+  max-width: 38rem;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+#sapper p.lead a {
+  color: var(--accent-ink);
+}
+
+/* Section labels: the mono caps of hotcfg.run's footer columns. */
+#sapper main h2 {
+  margin: 0;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+#sapper main section + h2,
+#sapper main section > h2 {
+  margin-top: 3rem;
+  margin-bottom: 0.75rem;
+}
+#sapper main section:first-of-type > h2 {
+  margin-top: 0;
+}
+#sapper main h3 {
+  margin: 1.5rem 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  opacity: 1;
+}
+#sapper main h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* "Services" with the 24h / 7d / 30d / 1y / all switch. */
+#sapper main > .f:has(> form.r) {
+  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+}
+#sapper form.f.r {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--rule);
+  border-radius: 0.375rem;
+  background: var(--card-background-color);
+}
+#sapper form.r label {
+  display: inline-block;
+  margin: 0;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+#sapper form.r label:hover {
+  color: var(--ink);
+}
+#sapper form.r input:checked + label {
+  background: var(--raised);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ---- Cards ---- */
+
+#sapper article {
+  /* No colored left edge: status shows as a dot and a badge instead.
+     (global.css colors the left border with these, !important.) */
+  --up-border-left-color: var(--card-border-color);
+  --degraded-border-left-color: var(--card-border-color);
+  --down-border-left-color: var(--card-border-color);
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--card-border-color);
+  border-radius: 0.25rem;
+  background: var(--card-background-color);
+  color: var(--body);
+  font-size: 0.875rem;
+  transition: border-color 0.15s;
+}
+#sapper article + article {
+  margin-top: 0.5rem;
+}
+#sapper article.link:hover {
+  border-color: var(--rule-strong);
+}
+#sapper article a {
+  text-decoration: none;
+}
+/* Open incidents and maintenance: tinted, like hotcfg.run's notices. */
+#sapper article.down-active {
+  --down-border-left-color: color-mix(in oklab, var(--down) 35%, transparent);
+  background: color-mix(in oklab, var(--down) 6%, var(--card-background-color));
+}
+#sapper article.degraded-active,
+#sapper article.down-active.degraded {
+  --degraded-border-left-color: color-mix(in oklab, var(--degraded) 35%, transparent);
+  --down-border-left-color: color-mix(in oklab, var(--degraded) 35%, transparent);
+  border-color: color-mix(in oklab, var(--degraded) 35%, transparent);
+  background: color-mix(in oklab, var(--degraded) 6%, var(--card-background-color));
+}
+#sapper article .f > div:first-child > div {
+  margin-top: 0.125rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+/* "Incident #12 report →" */
+#sapper article .f.r a {
+  color: var(--accent-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+#sapper article .f.r a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* "✅ All systems are operational" (shown when no incident is open): a green
+   banner with a dot instead of the emoji, which is plain text in the markup,
+   so the text is hidden and redrawn. */
+#sapper main > article.up {
+  --up-border-left-color: color-mix(in oklab, var(--up) 30%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+  padding: 1rem 1.25rem;
+  border-color: color-mix(in oklab, var(--up) 30%, transparent);
+  background: color-mix(in oklab, var(--up) 7%, var(--card-background-color));
+  font-size: 0;
+}
+#sapper main > article.up::before {
+  content: "";
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--up);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--up) 22%, transparent);
+}
+#sapper main > article.up::after {
+  content: "All systems operational";
+  color: var(--up-ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* Live status: a dot, the name and a badge; the numbers in mono; the
+   response-time graph as a faint accent shape at the right. */
+#sapper .live-status article {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 1.125rem 1.25rem;
+}
+#sapper .live-status article h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+}
+#sapper .live-status .icon {
+  display: none;
+}
+#sapper .live-status article h4::before {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--up);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--up) 22%, transparent);
+}
+#sapper .live-status article.degraded h4::before {
+  background: var(--degraded);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--degraded) 22%, transparent);
+}
+#sapper .live-status article.down h4::before {
+  background: var(--down);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--down) 22%, transparent);
+}
+#sapper .live-status article h4::after {
+  content: "Operational";
+  display: inline-flex;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--up-ink);
+  background: color-mix(in oklab, var(--up) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--up) 30%, transparent);
+}
+#sapper .live-status article.degraded h4::after {
+  content: "Degraded";
+  color: var(--degraded-ink);
+  background: color-mix(in oklab, var(--degraded) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--degraded) 30%, transparent);
+}
+#sapper .live-status article.down h4::after {
+  content: "Down";
+  color: var(--down-ink);
+  background: color-mix(in oklab, var(--down) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--down) 30%, transparent);
+}
+#sapper .live-status article > div {
+  display: inline-block;
+  margin-right: 1.5rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+#sapper .data {
+  padding: 0.0625rem 0.25rem;
+  margin-left: -0.25rem;
+  border-radius: 0.25rem;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+#sapper .live-status article.graph {
+  background-image: none;
+}
+#sapper .live-status article.graph::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0.75rem;
+  right: 0;
+  bottom: 0;
+  width: min(45%, 15rem);
+  background: var(--accent);
+  opacity: 0.16;
+  -webkit-mask: var(--background) center / 100% 100% no-repeat;
+  mask: var(--background) center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+#sapper .live-status article.down.graph::before {
+  background: var(--down);
+}
+html[data-theme="light"] #sapper .live-status article.graph::before {
+  opacity: 0.12;
+}
+
+/* ---- Badges (incident pages: Up / Down, Open / Closed) ---- */
+
+#sapper .tag {
+  display: inline-flex;
+  align-items: center;
+  margin: -0.2rem 0 0 0.625rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+#sapper .tag.up,
+#sapper .tag.closed {
+  color: var(--up-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--up) 30%, transparent);
+}
+#sapper .tag.down,
+#sapper .tag.open {
+  color: var(--down-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--down) 30%, transparent);
+}
+#sapper .tag.degraded {
+  color: var(--degraded-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--degraded) 30%, transparent);
+}
+
+/* ---- Service and incident pages ---- */
+
+#sapper main h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+#sapper main dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.375rem 1.5rem;
+  margin: 1.25rem 0 2rem;
+  font-size: 0.875rem;
+}
+#sapper main dl dt {
+  color: var(--faint);
+  font-weight: 400;
+}
+#sapper main dl dd {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+#sapper main .r p a,
+#sapper main section ~ footer a,
+#sapper main > footer a {
+  color: var(--accent-ink);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+#sapper main .r p a:hover,
+#sapper main > footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Incident updates (GitHub issue comments). */
+#sapper main article > p {
+  margin: 0 0 0.75rem;
+  color: var(--body);
+  font-size: 0.9375rem;
+}
+#sapper main article > div a {
+  color: var(--muted);
+}
+#sapper main article > div a:hover {
+  color: var(--ink);
+}
+#sapper main canvas {
+  max-width: 100%;
+}
+
+/* Loading spinner. */
+#sapper .loading svg {
+  stroke: var(--faint);
+}
+
+/* Error and rate-limit pages. */
+#sapper a.error-button,
+#sapper .submit-button {
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 0.25rem;
+  font: 500 0.875rem/1 var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+#sapper a.error-button:hover,
+#sapper .submit-button:hover {
+  background: var(--accent-hover);
+}
+#sapper main input[type="text"],
+#sapper main input[type="password"] {
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: 0.875rem var(--font-mono);
+}
+
+/* ---- Footer: hotcfg.run's dashboard footer ---- */
+
+#sapper > footer {
+  margin-top: 4.5rem;
+  border-top: 1px solid var(--rule);
+  opacity: 1;
+  text-align: left;
+}
+#sapper > footer p {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.25rem var(--gutter);
+  box-sizing: border-box;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+#sapper > footer a {
+  text-decoration: none;
+}
+#sapper > footer a:hover {
+  color: var(--ink);
+}
