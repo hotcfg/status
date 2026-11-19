@@ -4,19 +4,19 @@
     "url": "https://hotcfg.run",
     "icon": "https://hotcfg.run/favicon.svg",
     "slug": "website-and-dashboard",
-    "status": "down",
-    "uptime": "99.94%",
-    "uptimeDay": "99.91%",
-    "uptimeWeek": "99.94%",
-    "uptimeMonth": "99.94%",
-    "uptimeYear": "99.94%",
-    "time": 6959,
-    "timeDay": 10131,
-    "timeWeek": 6959,
-    "timeMonth": 6959,
-    "timeYear": 6959,
+    "status": "up",
+    "uptime": "93.62%",
+    "uptimeDay": "89.47%",
+    "uptimeWeek": "93.62%",
+    "uptimeMonth": "93.62%",
+    "uptimeYear": "93.62%",
+    "time": 7212,
+    "timeDay": 9411,
+    "timeWeek": 7212,
+    "timeMonth": 7212,
+    "timeYear": 7212,
     "dailyMinutesDown": {
-      "2026-11-19": 1
+      "2026-11-19": 152
     }
   },
   {
@@ -24,17 +24,19 @@
     "url": "https://api.hotcfg.run/_health",
     "icon": "https://hotcfg.run/favicon.svg",
     "slug": "api",
-    "status": "down",
-    "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-    "time": 6788,
-    "timeDay": 9949,
-    "timeWeek": 6788,
-    "timeMonth": 6788,
-    "timeYear": 6788,
-    "dailyMinutesDown": {}
+    "status": "up",
+    "uptime": "93.66%",
+    "uptimeDay": "89.55%",
+    "uptimeWeek": "93.66%",
+    "uptimeMonth": "93.66%",
+    "uptimeYear": "93.66%",
+    "time": 5242,
+    "timeDay": 6834,
+    "timeWeek": 5242,
+    "timeMonth": 5242,
+    "timeYear": 5242,
+    "dailyMinutesDown": {
+      "2026-11-19": 150
+    }
   }
 ]
